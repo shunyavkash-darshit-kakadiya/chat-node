@@ -5,17 +5,16 @@ import { CLIENT_URL, APP_JWT_SECRET } from "./environment.config.js";
 
 let io;
 const onlineUsers = new Map(); // userId -> socketId
-console.log("onlineUsers====>", onlineUsers);
 
 export const initSocket = (server) => {
   io = new Server(server, {
     cors: {
       origin: CLIENT_URL,
-      credentials: true,
+      credentials: true, //Cookies allow
     },
   });
 
-  // Socket Auth
+  // Socket Auth middleware
   io.use((socket, next) => {
     try {
       const cookie = socket.handshake.headers.cookie;
@@ -41,6 +40,7 @@ export const initSocket = (server) => {
   // connection
   io.on("connection", (socket) => {
     onlineUsers.set(socket.userId, socket.id);
+    console.log("Online users==>", Array.from(onlineUsers.entries()));
 
     // Send Message
     socket.on("send_message", async ({ to, message }) => {
