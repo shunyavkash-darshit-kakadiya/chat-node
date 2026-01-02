@@ -6,7 +6,6 @@ import { cookieParser } from "./middleware/cookieParser.middleware.js";
 import appRouter from "./app/app.route.js";
 import corsMiddleware from "./middleware/cors.middleware.js";
 import { initSocket } from "./configs/socket.config.js";
-import "./socket/testSocket.js";
 
 const app = express();
 app.use(express.json());
