@@ -10,7 +10,10 @@ const getChatHistory = async (req, res) => {
         { senderId: currentUserId, receiverId },
         { senderId: receiverId, receiverId: currentUserId },
       ],
-    }).sort({ createdAt: 1 }); // oldest → newest
+    })
+      .populate("senderId", "fullName email")
+      .populate("receiverId", "fullName email")
+      .sort({ createdAt: -1 }); // newest → oldest
 
     res.status(200).json({
       success: true,
