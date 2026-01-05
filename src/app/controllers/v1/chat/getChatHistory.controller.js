@@ -5,19 +5,24 @@ const getChatHistory = async (req, res) => {
     const currentUserId = req.user._id;
     const { receiverId } = req.params;
 
-    const messages = await Message.find({
+    const query = {
       $or: [
         { senderId: currentUserId, receiverId },
         { senderId: receiverId, receiverId: currentUserId },
       ],
-    })
+    };
+
+    const messages = await Message.find(query)
       .populate("senderId", "fullName email")
       .populate("receiverId", "fullName email")
       .sort({ createdAt: 1 }); // oldest to newest
 
+    const count = await Message.countDocuments(query);
+
     res.status(200).json({
       success: true,
       data: messages,
+      count: count,
     });
   } catch (error) {
     res.status(500).json({
