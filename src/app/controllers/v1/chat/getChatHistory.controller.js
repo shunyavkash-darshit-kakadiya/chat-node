@@ -2,7 +2,7 @@ import Message from "../../../../models/message.model.js";
 
 const getChatHistory = async (req, res) => {
   try {
-    const currentUserId = req.user._id; // auth middleware se
+    const currentUserId = req.user._id;
     const { receiverId } = req.params;
 
     const messages = await Message.find({
