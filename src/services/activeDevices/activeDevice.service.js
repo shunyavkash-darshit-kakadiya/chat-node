@@ -1,4 +1,6 @@
 import activeDeviceModel from "../../models/activeDevice.model.js";
+import generateCustomId from "../../utils/customID/generateCustomId.js";
+import { customIdPrefix } from "../../constants/customIdPrefix.js";
 
 // Store user device info during login
 export async function createActiveDevice({
@@ -17,6 +19,7 @@ export async function createActiveDevice({
       browser,
       os,
       userAgent,
+      customId: generateCustomId(customIdPrefix.activeDevice),
     });
   }
 
