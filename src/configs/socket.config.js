@@ -41,7 +41,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     // console.log("socket.userId==>", socket.userId);
     onlineUsers.set(socket.userId, socket.id);
-    console.log("Online users==>", Array.from(onlineUsers.entries()));
+    // console.log("Online users==>", Array.from(onlineUsers.entries()));
 
     // Send Message
     socket.on("send_message", async ({ to, message }) => {
