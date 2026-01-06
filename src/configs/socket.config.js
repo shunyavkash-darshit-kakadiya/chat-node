@@ -39,6 +39,7 @@ export const initSocket = (server) => {
 
   // connection
   io.on("connection", (socket) => {
+    // console.log("socket.userId==>", socket.userId);
     onlineUsers.set(socket.userId, socket.id);
     // console.log("Online users==>", Array.from(onlineUsers.entries()));
 
