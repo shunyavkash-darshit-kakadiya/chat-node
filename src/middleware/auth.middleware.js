@@ -27,20 +27,28 @@ const AuthMiddleware = async (req, res, next) => {
       });
     }
 
-    const visitorId = req.headers["x-visitor-id"];
+    const user = await Auth.findById(decoded._id);
 
-    if (visitorId) {
+    //two factor authentication check
+    if (user.twoFactorEnabled) {
+      const visitorId = req.headers["x-visitor-id"];
+
+      if (!visitorId) {
+        return res.status(401).json({
+          success: false,
+          message: "Visitor ID required for 2FA",
+          data: { forceLogout: true },
+        });
+      }
+
       const activeDevice = await getActiveDevice(decoded._id, visitorId);
 
       if (!activeDevice) {
-        const user = await Auth.findById(decoded._id);
-        if (user.twoFactorEnabled) {
-          return res.status(401).json({
-            success: false,
-            message: "You have been logged out from another device",
-            data: { forceLogout: true },
-          });
-        }
+        return res.status(401).json({
+          success: false,
+          message: "2FA verification required",
+          data: { forceLogout: true },
+        });
       }
     }
 
