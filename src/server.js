@@ -5,9 +5,14 @@ import { appDb } from "./configs/dbConnection.config.js";
 import { cookieParser } from "./middleware/cookieParser.middleware.js";
 import appRouter from "./app/app.route.js";
 import corsMiddleware from "./middleware/cors.middleware.js";
+import limiter from "./middleware/rateLimiter.middleware.js";
 import { initSocket } from "./configs/socket.config.js";
 
 const app = express();
+
+// Rate limiter middleware
+app.use(limiter);
+
 app.use(express.json());
 
 // const corsOptions = {
